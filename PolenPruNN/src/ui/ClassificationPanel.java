@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,12 +18,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import algo.nn.NeuralNetwork;
+import constants.InputHandler;
 import controller.MainController;
 import controller.GlobalVariables;
 import controller.data.Data;
 import controller.data.DataLocationHandler;
 import controller.data.DataReader;
+import feature.glcm.Haralick;
 import helper.file.Directory;
+import ij.process.ColorProcessor;
 import image.ImageProcessor;
 import ui.constants.ColorFactory;
 
@@ -44,6 +49,8 @@ public class ClassificationPanel extends JPanel {
 	private ImageProcessor imageProcessor;
 	
 	private File testFile;
+	
+	private File singleImageFile;
 	
 	private Data testData;
 	
@@ -163,8 +170,10 @@ public class ClassificationPanel extends JPanel {
 
 	protected void singleClassificationButtonClicked() {
 		// TODO Auto-generated method stub
-		
+		classifyCurrentImage();
 	}
+
+	
 
 	protected void batchClassificationButtonClicked() {
 		// TODO Auto-generated method stub
@@ -181,10 +190,36 @@ public class ClassificationPanel extends JPanel {
 		
 	}
 	
+	private void classifyCurrentImage() {
+		// TODO Auto-generated method stub
+//		processed = imageProcessor.process(temp, 200, 200);
+		
+		ArrayList<BufferedImage> imagesToClassify = new ArrayList<BufferedImage>();
+		ArrayList<Integer> equivalentOutputList = new ArrayList<Integer>();
+		
+		imagesToClassify.add(temp);
+		equivalentOutputList.add(Integer.parseInt(singleImageFile.getParentFile().getName()));
+		
+		double[] weights = InputHandler.getInstance().getTrainedABC().getSolution();
+		double[][] totalSample = imageProcessor.createInputVectorArray(imagesToClassify);
+		double[][] output = imageProcessor.createOutputVector(equivalentOutputList);
+		
+		System.out.println("New Network");
+		System.out.println("");
+		NeuralNetwork nn = new NeuralNetwork();
+		nn.setDebugMode(true);
+		nn.reset(new ArrayList<Integer>(), new ArrayList<Integer>());
+		nn.buildNetwork(weights, InputHandler.getInstance(), totalSample, output);
+		
+		
+		System.out.println("Correct: "+nn.getTotalCorrect());
+		
+	}
+	
 	private void showInput() {
-		File file = selectInputImage();
-		if (file != null) {
-			showInput(file);
+		singleImageFile = selectInputImage();
+		if (singleImageFile != null) {
+			showInput(singleImageFile);
 		}
 	}
 	
@@ -219,7 +254,7 @@ public class ClassificationPanel extends JPanel {
 			public void run() {
 				System.out.println("Locating Files...");
 				DataReader dl = new DataReader(testFile);
-				System.out.println("Done locating... Preparing Files");
+				System.out.println("Done locating... \nPreparing Files");
 				if(dl.read()) {									//Reads the Datafile
 					testData = dl.getData();
 //					DataReader dl2 = new DataReader(progressPane, testFile);

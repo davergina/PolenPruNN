@@ -120,8 +120,7 @@ public class ImageProcessor {
 	// }
 
 	public double[][] createInputVectorArray(
-			ArrayList<BufferedImage> input_data,
-			ArrayList<Integer> output_list) {
+			ArrayList<BufferedImage> input_data) {
 		int patternSize = input_data.size();
 		double[][] inputArray = new double[patternSize][GlobalVariables.NUMBER_OF_INPUT];
 

@@ -81,6 +81,10 @@ public class NeuralNetwork {
 			double input[] = totalSample[k];
 			double output[] = _output[k];
 
+			if(isDebugMode){
+				printNodes("expected: ",_output[k]);
+			}
+			
 			/* Neural Network Simulation - start */
 			simulateNetwork(handler.numHidden, weights, input, output);
 
@@ -90,6 +94,16 @@ public class NeuralNetwork {
 			/* Neural Network Simulation - end */
 		}
 //		System.out.println("Total SSE: "+totalSSE);
+	}
+
+	private void printNodes(String title, double[] outputNode) {
+		// TODO Auto-generated method stub
+		System.out.println("");
+		System.out.print(title);
+		for(int i = 0; i < outputNode.length; i++){
+			System.out.print(""+outputNode[i]+" ");
+		}
+		
 	}
 
 	/*
@@ -178,6 +192,10 @@ public class NeuralNetwork {
 			else
 				inputNode[i] = 1.0;
 		}
+		
+		if(isDebugMode){
+			printNodes("Input: ", inputNode);
+		}
 
 		// compute for the value of the hidden node
 		for (i = 0; i < numHidden + 1; i++) {
@@ -188,14 +206,26 @@ public class NeuralNetwork {
 			else
 				hiddenNode[i] = 1.0; // bias Node
 		}
+		if(isDebugMode){
+			printNodes("Hidden: ", hiddenNode);
+			System.out.println("");
+		}
 
 		// compute for the value of the output node
 		for (i = 0; i < outputNode.length; i++) {
 			outputNode[i] = activationFunction(
 					adderFunction(hiddenNode, weight, numOutput, i + 1, inputNode.length * numHidden));
+			if(isDebugMode){
+				System.out.println("Output--- actual:"+outputNode[i]+" expected:"+output[i]);
+			}
 			errorSummation = errorSummation + calculateError(output[i], outputNode[i]);
-
 			getNumCorrectAnswerPerSample(output[i], outputNode[i]);
+		}
+		
+		if(isDebugMode){
+			printNodes("actual: ", outputNode);
+			System.out.println("");
+			System.out.println("-----------------------------------------------------------------------------");
 		}
 		calculateSSE(totalSSE, errorSummation / outputNode.length);
 //		System.out.println("Total SSE: "+totalSSE);
@@ -386,4 +416,10 @@ public class NeuralNetwork {
 
 		return returnable;
 	}
+	
+	public void setDebugMode(boolean isDebugMode){
+		this.isDebugMode = isDebugMode;
+	}
+	
+	private boolean isDebugMode = false;
 }

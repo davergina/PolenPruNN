@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import controller.GlobalVariables;
 import controller.data.DataLocationHandler;
 import ui.util.EventPanelView;
 
@@ -22,6 +23,12 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		init();
 		addPanels();
+		initDefaults();
+	}
+
+	private void initDefaults() {
+		// TODO Auto-generated method stub
+		GlobalVariables.setMode(GlobalVariables.STANDARD_RUN);
 	}
 
 	private void addPanels() {

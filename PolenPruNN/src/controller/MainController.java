@@ -15,7 +15,7 @@ public class MainController {
 		GlobalVariables.setMode(GlobalVariables.STANDARD_RUN);
 		
 		int runtime = 1;
-		int maxCycle = 30;
+		int maxCycle = 100;
 		int employedBeeSize = 15;
 		int onlookerBeeSize = 15;
 		int dimension = GlobalVariables.DIMENSIONS;
@@ -32,6 +32,7 @@ public class MainController {
 		handler.setDimension(dimension);
 		
 		handler.setNumInput(GlobalVariables.STANDARD_INPUT_NODES);
+		handler.setNumHidden(GlobalVariables.STANDARD_HIDDEN_NODES);
 		handler.setNumOutput(GlobalVariables.NUMBER_OF_OUTPUT);
 		
 		ABC abc = new ABC(runtime, maxCycle, employedBeeSize, onlookerBeeSize, dimension);

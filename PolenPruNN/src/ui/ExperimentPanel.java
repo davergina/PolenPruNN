@@ -115,7 +115,7 @@ public class ExperimentPanel extends JPanel {
 
 	protected void startTrainButtonClicked() {
 		// TODO Auto-generated method stub
-		trainingSetTEST();
+//		trainingSetTEST();
 		MainController.runABC(trainingData);
 	}
 

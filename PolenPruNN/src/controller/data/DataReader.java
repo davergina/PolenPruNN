@@ -91,7 +91,7 @@ public class DataReader extends FileHelper
 			System.out.println("Cannot convert to integer");
 			return false;
 		} 
-		inputVector = iProcessor.createInputVectorArray(input_list, output_list);
+		inputVector = iProcessor.createInputVectorArray(input_list);
     	outputVector = iProcessor.createOutputVector(output_list);
 
 		return true;
