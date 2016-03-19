@@ -207,7 +207,6 @@ public class ClassificationPanel extends JPanel {
 		System.out.println("New Network");
 		System.out.println("");
 		NeuralNetwork nn = new NeuralNetwork();
-		nn.setDebugMode(true);
 		nn.reset(new ArrayList<Integer>(), new ArrayList<Integer>());
 		nn.buildNetwork(weights, InputHandler.getInstance(), totalSample, output);
 		

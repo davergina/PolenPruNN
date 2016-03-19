@@ -39,8 +39,6 @@ public class ABC {
 	/* END added code */
 	private File solutionDir;
 
-	private boolean isAtMaxCycle;
-	
 	public ABC(int runtime, int maxCycle, int employedBeeSize,
 			int onlookerBeeSize, int dimension) {
 		this.runtime = runtime;
@@ -79,32 +77,8 @@ public class ABC {
 //		train(input, output);
 //	}
 
-	private void trainingSetTEST(Data trainingData) {
-		// TODO Auto-generated method stub
-		int trainingSize = trainingData.size();
-		for(int i = 0; i<trainingSize; i++){
-			System.out.println("");
-			System.out.print("Input(features): [");
-			for(int j = 0; j<trainingData.getInputVector()[i].length; j++){
-				System.out.print(""+trainingData.getInputVector()[i][j]+", ");
-			}
-			System.out.print("]");
-			System.out.println("");
-			System.out.print("Output: [");
-			for(int j = 0; j<trainingData.getOutputVector()[i].length; j++){
-				System.out.print(""+trainingData.getOutputVector()[i][j]+", ");
-			}
-			System.out.print("]");
-			System.out.println("");
-		}
-		
-	}
 	
 	public void train(Data trainingData){
-		
-		
-		trainingSetTEST(trainingData);
-		
 		train(trainingData.getInputVector(), trainingData.getOutputVector());
 	}
 	
@@ -145,11 +119,6 @@ public class ABC {
 
 			for (int cycle = 0; cycle < maxCycle;) {
 				
-				/*added code for debuggung*/
-				if(cycle==maxCycle-1){
-					isAtMaxCycle=true;
-				}
-				
 				sendEmployedBees();
 				calculateProbabilities();
 				sendOnlookerBees();
@@ -188,21 +157,17 @@ public class ABC {
 			showRunResults(run, elapsedTime);
 //			write.writeWeights(getSolution());
 
-			NeuralNetwork network = new NeuralNetwork();
-//			network.setDebugMode(true);
-			network.buildNetwork(getSolution(), InputHandler.getInstance(),
-					input_data, output_data);
-			double trainingPercentage = network.getPercentageCorrect();
-			double trainingMSE = network.getAverageMSE();
-			
-			
+//			NeuralNetwork network = new NeuralNetwork();
+//			
+//			network.buildNetwork(getSolution(), InputHandler.getInstance(),
+//					input_data, output_data);
+//			double trainingPercentage = network.getPercentageCorrect();
+//			double trainingMSE = network.getAverageMSE();
+//			
 //			network.buildNetwork(getSolution(), InputHandler.getInstance(),
 //					InputHandler.getInstance().getTestInput(), InputHandler
 //							.getInstance().getTestOutput());
 
-			System.out.println("");
-			System.out.println("Training Percentage: "+trainingPercentage+", TrainingMSE: "+trainingMSE);
-			
 			/*Removed Prunning Codes */
 
 			/* END added code */
@@ -212,9 +177,6 @@ public class ABC {
 			 * ExperimentPane.getInstance().returnResult(GlobalMin,
 			 * Params[bestIndex], elapsedTime, run+1); END remove unused code
 			 */
-			
-			
-			
 			System.out.println("Best Min:"+bestMin+", Time: "+elapsedTime+", Run: "+run+1);
 		
 			
@@ -266,15 +228,9 @@ public class ABC {
 
 		/* START added code */
 		NeuralNetwork nn = new NeuralNetwork();
-		
-//		if(index==0){
-//			nn.setDebugMode(true);
-//		}
-		
 		nn.reset(new ArrayList<Integer>(), new ArrayList<Integer>());
 		nn.buildNetwork(solution, InputHandler.getInstance(), input_data,
 				output_data);
-		
 		
 		MSE[index] = nn.getAverageMSE();
 		/* END added code */
@@ -353,20 +309,9 @@ public class ABC {
 		 */
 		/* START added code */
 		NeuralNetwork nn = new NeuralNetwork();
-		
-		if(isAtMaxCycle){
-			nn.setDebugMode(true);
-		}
 		nn.reset(new ArrayList<Integer>(), new ArrayList<Integer>());
 		nn.buildNetwork(solution, InputHandler.getInstance(), input_data,
 				output_data);
-		
-		
-		if(isAtMaxCycle){
-			
-		}
-		
-		
 		ObjValSol = nn.getAverageMSE();
 		/* END added code */
 		FitnessSol = calculateFitness(ObjValSol);

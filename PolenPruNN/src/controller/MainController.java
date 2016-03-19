@@ -15,7 +15,7 @@ public class MainController {
 		GlobalVariables.setMode(GlobalVariables.STANDARD_RUN);
 		
 		int runtime = 1;
-		int maxCycle = 100;
+		int maxCycle = 250;
 		int employedBeeSize = 15;
 		int onlookerBeeSize = 15;
 		int dimension = GlobalVariables.DIMENSIONS;
